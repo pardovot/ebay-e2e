@@ -45,6 +45,8 @@ Each test runs in a new guest session. Item and cart tests take their items from
 
 ## Reports
 
+The report of the latest run is at https://pardovot.github.io/ebay-e2e/, with its [JUnit XML](https://pardovot.github.io/ebay-e2e/junit.xml). To build one from a local run:
+
 ```bash
 npx allure@3.22.1 generate ./allure-results --clean --open
 ```
