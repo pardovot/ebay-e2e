@@ -74,7 +74,8 @@ class SearchResultsPage(BasePage):
     @allure.step("Search '{query}' for up to {limit} items priced at most {max_price}")
     def search_items_by_name_under_price(self, query: str, max_price: Decimal, limit: int = 5) -> list[str]:
         # Buy It Now only, since auction listings have no "Add to cart" button.
-        self.open_results(query, max_price, buy_it_now=True)
+        self.open_results(query, buy_it_now=True)
+        self.filter_max_price(max_price)
         urls: list[str] = []
         page_number = 1
         while True:
