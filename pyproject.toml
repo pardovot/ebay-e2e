@@ -1,0 +1,18 @@
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+markers = [
+    "e2e: drives the live ebay.com site",
+]
+addopts = [
+    "--alluredir=allure-results",
+    "--clean-alluredir",
+    "--junitxml=reports/junit.xml",
+    "--screenshot=on",
+    "--video=retain-on-failure",
+    "--tracing=retain-on-failure",
+    "--output=artifacts/playwright",
+]
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s %(levelname)s %(name)s: %(message)s"
