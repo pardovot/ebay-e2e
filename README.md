@@ -19,10 +19,10 @@ playwright install chromium
 ```bash
 pytest tests/unit                   # offline
 pytest -m e2e -n 2                  # live ebay.com
-EBAY_SLOW_MO_MS=400 pytest -m e2e   # slowed down to watch
+EBAY_PROFILE=debug pytest -m e2e    # slowed down to watch
 ```
 
-Settings live in `config/settings.py`, and each one can be overridden by an `EBAY_<NAME>` environment variable, e.g. `EBAY_CURRENCY=USD` where eBay shows USD prices.
+Settings have defaults in `config/settings.py`. `EBAY_PROFILE` picks a profile from `config/profiles/` (`debug`, `us` for USD prices), and `EBAY_<NAME>` environment variables override both, e.g. `EBAY_CURRENCY=EUR`.
 
 ## Test data
 
@@ -54,7 +54,7 @@ The Allure report has a step for every page action, screenshots of each added it
 ## Structure
 
 ```
-config/settings.py   settings
+config/              settings and profiles
 data/                test data
 pages/               page objects, BasePage holds navigation and the header
 utils/               price parsing, item URLs, test data loader, screenshots, ad hosts
@@ -74,6 +74,8 @@ tests/unit/          price parsing tests
 - The budget is checked against the cart's items total, because eBay's subtotal includes shipping.
 - A price range counts by its top price, so any random variant stays within budget.
 - Only Buy It Now listings are used, since auctions have no Add to cart.
+- Quantity stays 1, since the budget is per item times the item count.
+- Search stops after 5 result pages (`EBAY_MAX_RESULT_PAGES`), so a rare item can't page through all of eBay.
 - eBay blocks headless browsers, so the tests run headed.
 - eBay also blocks automated sessions after a few runs close together, and the test then fails with "eBay served its bot wall".
 - eBay blocks GitHub hosted runners on the first page, so there's no CI.
